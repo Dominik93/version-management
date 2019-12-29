@@ -1,0 +1,9 @@
+[GIT]
+url = https://username:password@url
+client = path/to/git
+[PROJECT]
+customer = CUSTOMER
+[MAVEN]
+client = path/to/mvn
+[ENV]
+system = unix
