@@ -4,6 +4,9 @@ versions = ['major', 'minor', 'incremental']
 defaultVersion = 'incremental'
 
 class Version:
+
+	logger = None
+
 	incrementMajorVersion = False
 	incrementMinorVersion = False
 	incrementIncrementalVersion = False
@@ -13,6 +16,7 @@ class Version:
 	incrementalVersion = '${parsedVersion.incrementalVersion}'
 
 	def __init__(self, bumpedVersion = 'none'):
+		self.logger = Logger.getInstance()
 		if bumpedVersion == "major":
 			self.incrementMajorVersion = True
 			self.majorVersion = '${parsedVersion.nextMajorVersion}'
@@ -22,4 +26,4 @@ class Version:
 		elif bumpedVersion == "incremental":
 			self.incrementIncrementalVersion = True
 			self.incrementalVersion = '${parsedVersion.nextIncrementalVersion}'
-		log('Init version with: ' + str(self.incrementMajorVersion) +" | " + str(self.incrementMinorVersion) +" | "+ str(self.incrementIncrementalVersion) + ' | ' + self.majorVersion+ '.' + self.minorVersion+ '.' + self.incrementalVersion)
+		self.logger.log('Init version with: ' + str(self.incrementMajorVersion) +" | " + str(self.incrementMinorVersion) +" | "+ str(self.incrementIncrementalVersion) + ' | ' + self.majorVersion+ '.' + self.minorVersion+ '.' + self.incrementalVersion)

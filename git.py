@@ -4,6 +4,8 @@ from path import *
 
 class Git:
 
+	logger = None
+
 	debug = False
 	projectPath = ""
 	module = ""
@@ -11,17 +13,18 @@ class Git:
 	client = ""
 
 	def __init__(self, config, module, debug = False):
+		self.logger = Logger.getInstance()
 		self.debug = debug
 		self.projectPath = getCurrentDirectory() + '/'+ module.split('/')[-1]
 		self.module = module
 		self.url = config['GIT']['url']
 		self.client = config['GIT']['client']
-		log("Init git with: " + self.projectPath + " | "+  self.url + " | " + self.module + " | client: " + self.client + " | debug: " + str(self.debug))
+		self.logger.log("Init git with: " + self.projectPath + " | "+  self.url + " | " + self.module + " | client: " + self.client + " | debug: " + str(self.debug))
 
 	def clone(self):
-		commandLog('git clone '+ self.url + '/'+ self.module+'.git')
+		self.logger.commandLog('git clone '+ self.url + '/'+ self.module+'.git')
 		output = os.popen('git clone '+ self.url + '/'+ self.module+'.git').read()
-		log(output)
+		self.logger.log(output)
 
 	def createBranch(self, branch):
 		self.git('checkout -b ' + branch)
@@ -53,7 +56,7 @@ class Git:
 
 	def git(self, command):
 		fullCommand = self.client + ' -C ' + self.projectPath + ' ' + command
-		commandLog(fullCommand)
+		self.logger.commandLog(fullCommand)
 		if not self.debug:
 			output = os.popen(fullCommand).read()
-			log(output)
+			self.logger.log(output)

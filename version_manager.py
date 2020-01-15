@@ -12,7 +12,7 @@ def incrementVersion(module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	currentVersion = getVersion(module);
 	incrementedVersion = insertZero(currentVersion)
-	log('Increment version of '+ module + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	logger.log('Increment version of '+ module + ' from ' + currentVersion + ' to ' + incrementedVersion)
 	changeVersion(module, currentVersion, incrementedVersion)
 
 
@@ -41,7 +41,7 @@ def changeParentVersion(file, currentVersion, incrementedVersion):
 		else:
 			f.write(line)
 	f.close()
-	log('Changed parent in file '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	logger.log('Changed parent in file '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
 	
 def changeMainVersion(file, currentVersion, incrementedVersion):
 	f = open(file, "r") 
@@ -60,7 +60,7 @@ def changeMainVersion(file, currentVersion, incrementedVersion):
 		else:
 			f.write(line)
 	f.close()
-	log('Changed main pom '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	logger.log('Changed main pom '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
 		
 def getVersion(module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
@@ -77,35 +77,35 @@ def getVersion(module):
 			break
 
 	file.close()
-	log('Get version ' + version)
+	logger.log('Get version ' + version)
 	return version;
 
-def cutVersion(version): # 1.2.5.4-BNP   -> 5.7.5-BNP
+def cutVersion(version):
 	prefix = version.split('-')[1]
 	ver = version.split('-')[0]
 	if len(ver.split('.')) > 3: # 1.2.5.4.5.8
 		index = ver.rfind('.', 0, ver.rfind('.', 0, ver.rfind('.') -1) -1)
 		cut = '-'.join([ver[index+1:], prefix])
-		log('Cut: ' + cut)
+		logger.log('Cut: ' + cut)
 		return cut
 	cut = '-'.join([ver, prefix])
-	log('Cut: ' + cut)
+	logger.log('Cut: ' + cut)
 	return cut
 	
-def suffix(version):  # 1.2.5.5.4-BNP   -> 1.2
+def suffix(version):
 	prefix = version.split('-')[1]
 	ver = version.split('-')[0]
 	if len(ver.split('.')) > 3: # 1.2.5.4.5.8
 		index = ver.rfind('.', 0, ver.rfind('.', 0, ver.rfind('.') -1) -1)
 		suffix = ver[:index]
-		log('Suffix: ' + suffix)
+		logger.log('Suffix: ' + suffix)
 		return suffix
 	suffix = ver
-	log('Suffix: ' + suffix)
+	logger.log('Suffix: ' + suffix)
 	return suffix
 
 	
-def insertZero(version): # 1.2.5.4-BNP 2.5.7.5-SNAPSHOT
+def insertZero(version):
 	prefix = version.split('-')[1]
 	ver = version.split('-')[0]
 	ver = ver + '.0'

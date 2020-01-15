@@ -107,5 +107,6 @@ venv.bak/
 
 config.ini
 config-github.ini
+log.txt
 version-management-test
 .idea/*

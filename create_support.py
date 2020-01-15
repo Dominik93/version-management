@@ -17,7 +17,7 @@ from init import *
 def createSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
-		prettyLog('Create support version')
+		logger.prettyLog('Create support version')
 		branch = Branch(customer, moduleVersion)
 
 		git.clone()
@@ -42,12 +42,12 @@ def createSupportBranch(customer, module, moduleVersion):
 		cleaner.clean(directory)
 
 
-specialLog('Start create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('Start create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 args.version = input.askAndAnswer(args.version, 'Set version of module: ');
 createSupportBranch(customer, args.module, args.version)
 
-specialLog('End create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('End create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 
 

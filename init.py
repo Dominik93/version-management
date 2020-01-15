@@ -21,16 +21,17 @@ parser.add_argument("--maven-profiles", help = 'Profiles pass to maven, eg. "-PW
 parser.add_argument("--bump-version", help = 'What version number will be bump, only for release' , choices = versions, default = defaultVersion)
 parser.add_argument("--silent", help = 'Silent mode. Never ask user for input', action='store_true')
 parser.add_argument("--debug-mode", help = 'Debug mode, don`t execute command like git clone, mvn clean install', action='store_true')
+parser.add_argument("--log-output", help = 'Log all executed command and messages into file', action='store_true')
 args = parser.parse_args()
 
 config = configparser.ConfigParser()
 config.read(args.config_file)
-
-prettyLog('Init variables')
+logger = Logger.initialize(args.log_output)
+logger.prettyLog('Init variables')
 customer = config['PROJECT']['customer']
-log('Customer ' + customer)
+logger.log('Customer ' + customer)
 git = Git(config, args.module, args.debug_mode)
 maven = Maven(config, args.module, args.maven_options, args.maven_profiles, args.debug_mode)
 input = Input(args.silent)
 cleaner = Cleaner(config['ENV']['system'])
-prettyLog('Init variables end')
+logger.prettyLog('Init variables end')

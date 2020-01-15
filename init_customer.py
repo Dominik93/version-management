@@ -17,7 +17,7 @@ from init import *
 def initCustomer(customer, module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
-		prettyLog('Init customer')
+		logger.prettyLog('Init customer')
 		branch = Branch(customer)
 
 		git.clone()
@@ -31,9 +31,9 @@ def initCustomer(customer, module):
 		cleaner.clean(directory)
 
 
-specialLog('Start init customer ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('Start init customer ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 initCustomer(customer, args.module)
-specialLog('End init customer ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('End init customer ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 
 
