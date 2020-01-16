@@ -1,8 +1,11 @@
+from file_logger import *
+from simple_logger import *
+
 
 class Logger:
 	__instance = None
-	fileLog = False
-	file = None;
+	fileLogger = None
+	simpleLogger = None
 
 	@staticmethod
 	def getInstance():
@@ -18,41 +21,26 @@ class Logger:
 		if Logger.__instance != None:
 			raise Exception("This class is a singleton!")
 		else:
-			self.fileLog = fileLog
-			if self.fileLog :
-				self.file = open("log.txt","w+")
+			self.fileLogger = FileLogger(fileLog)
+			self.simpleLogger = SimpleLogger()
 			Logger.__instance = self
 
-	def __del__(self):
-		if self.file is not None:
-			self.file.close()
-
 	def log(self, logMessage):
-		print(logMessage)
-		if self.fileLog:
-			self.file.write(logMessage+'\n')
+		self.simpleLogger.log(logMessage)
+		self.fileLogger.log(logMessage+'\n')
 
 
 	def specialLog(self, logMessage):
-		print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
-		print(logMessage)
-		print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
-		if self.fileLog:
-			self.file.write('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'+'\n')
-			self.file.write(logMessage+'\n')
-			self.file.write('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'+'\n')
+		message = '*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n'+logMessage+'\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n';
+		self.simpleLogger.log(message)
+		self.fileLogger.log(message)
 
 
 	def commandLog(self, logMessage):
-		print('>>>>>>>>>>     ' + logMessage+'\n')
-		if self.fileLog:
-			self.file.write(logMessage+'\n')
+		self.simpleLogger.log('>>>>>>>>>>     ' + logMessage + '\n')
+		self.fileLogger.log('>>>>>>>>>>     ' + logMessage + '\n')
 
 	def prettyLog(self, logMessage):
-		print('------------------------------------------------------------------------------------')
-		print(logMessage)
-		print('------------------------------------------------------------------------------------')
-		if self.fileLog:
-			self.file.write('------------------------------------------------------------------------------------'+'\n')
-			self.file.write(logMessage+'\n')
-			self.file.write('------------------------------------------------------------------------------------'+'\n')
+		message = '-------------------------------------------------------------------------------------\n'+logMessage+'\n-------------------------------------------------------------------------------------\n';
+		self.simpleLogger.log(message)
+		self.fileLogger.log(message)
