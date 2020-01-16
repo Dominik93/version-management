@@ -72,8 +72,8 @@ class Maven:
 		fullCommand = self.client +' ' + command +' ' + self.options + ' ' + self.profiles + ' -f ' + self.projectPath
 		self.logger.commandLog(fullCommand)
 		if not self.debug:
-			for path in run(fullCommand):
-				self.logger.log(str(path.decode()))
-				if 'BUILD FAILURE' in str(path.decode()):
+			for partOfOutput in run(fullCommand):
+				self.logger.log(str(partOfOutput.decode()))
+				if 'BUILD FAILURE' in str(partOfOutput.decode()):
 					raise Exception(fullCommand + ' failed')
 		

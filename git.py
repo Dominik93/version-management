@@ -59,5 +59,5 @@ class Git:
 		fullCommand = self.client + ' -C ' + self.projectPath + ' ' + command
 		self.logger.commandLog(fullCommand)
 		if not self.debug:
-			for path in run(fullCommand):
-				self.logger.log(str(path.decode()))
+			for partOfOutput in run(fullCommand):
+				self.logger.log(str(partOfOutput.decode()))
