@@ -4,6 +4,7 @@ from logger import *
 from path import *
 from version import *
 from subprocess import Popen,PIPE,STDOUT,call
+from command_executor import *
 
 class Maven:
 
@@ -71,8 +72,8 @@ class Maven:
 		fullCommand = self.client +' ' + command +' ' + self.options + ' ' + self.profiles + ' -f ' + self.projectPath
 		self.logger.commandLog(fullCommand)
 		if not self.debug:
-			output = os.popen(fullCommand).read()
-			self.logger.log(output)
-			if 'BUILD FAILURE' in output:
-				raise Exception(fullCommand + ' failed')
+			for path in run(fullCommand):
+				self.logger.log(str(path.decode()))
+				if 'BUILD FAILURE' in str(path.decode()):
+					raise Exception(fullCommand + ' failed')
 		

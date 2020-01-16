@@ -1,6 +1,7 @@
 import os
 from logger import *
 from path import *
+from command_executor import *
 
 class Git:
 
@@ -58,5 +59,5 @@ class Git:
 		fullCommand = self.client + ' -C ' + self.projectPath + ' ' + command
 		self.logger.commandLog(fullCommand)
 		if not self.debug:
-			output = os.popen(fullCommand).read()
-			self.logger.log(output)
+			for path in run(fullCommand):
+				self.logger.log(str(path.decode()))

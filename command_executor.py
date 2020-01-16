@@ -1,21 +1,10 @@
-import sys
-import os
-from logger import *
+from subprocess import Popen, PIPE
 
 
-class Cleaner:
-
-	logger = None
-
-	system = 'windows'
-
-	def __init__(self, system):
-		self.logger = Logger.getInstance()
-		self.system = system
-		self.logger.log("Init cleaner with " + self.system)
-
-	def clean(self, directory):
-		if self.system == 'windows':
-			os.system('rd /s /q "' + directory + '"')
-		else:
-			os.system('rm -r -f ' + directory)
+def run(command):
+	process = Popen(command, stdout=PIPE, shell=True)
+	while True:
+		line = process.stdout.readline().rstrip()
+		if not line:
+			break
+		yield line
