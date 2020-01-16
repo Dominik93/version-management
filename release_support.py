@@ -17,7 +17,7 @@ from init import *
 def releaseSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
-		prettyLog('Release from support version')
+		logger.prettyLog('Release from support version')
 		branch = Branch(customer, moduleVersion)
 
 		git.clone()
@@ -43,10 +43,12 @@ def releaseSupportBranch(customer, module, moduleVersion):
 	finally:
 		cleaner.clean(directory)
 
-specialLog('Start release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('Start release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+
 args.version = input.askAndAnswer(args.version, 'Set version of module: ');
 releaseSupportBranch(customer, args.module, args.version)
-specialLog('End release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+
+logger.specialLog('End release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 
 

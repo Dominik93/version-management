@@ -7,6 +7,8 @@ from subprocess import Popen,PIPE,STDOUT,call
 
 class Maven:
 
+	logger = None
+
 	debug = False
 	projectPath = ""
 	module = ""
@@ -15,13 +17,14 @@ class Maven:
 	profiles = ""
 
 	def __init__(self, config, module, options, profiles, debug = False):
+		self.logger = Logger.getInstance()
 		self.debug = debug;
 		self.projectPath = getCurrentDirectory() + '/'+ module.split('/')[-1]
 		self.client = config['MAVEN']['client']
 		self.module = module
 		self.options = options.replace('\'','')
 		self.profiles = profiles.replace('\'','')
-		log("Init maven with: " + self.projectPath + " | " + self.module + " | options: " + self.options + " | profiles: " + self.profiles + " | client: " + self.client + " | debug: " +str(self.debug))
+		self.logger.log("Init maven with: " + self.projectPath + " | " + self.module + " | options: " + self.options + " | profiles: " + self.profiles + " | client: " + self.client + " | debug: " +str(self.debug))
 
 	def cleanInstall(self):
 		self.maven('clean install')
@@ -66,10 +69,10 @@ class Maven:
 
 	def maven(self, command):
 		fullCommand = self.client +' ' + command +' ' + self.options + ' ' + self.profiles + ' -f ' + self.projectPath
-		commandLog(fullCommand)
+		self.logger.commandLog(fullCommand)
 		if not self.debug:
 			output = os.popen(fullCommand).read()
-			log(output)
+			self.logger.log(output)
 			if 'BUILD FAILURE' in output:
 				raise Exception(fullCommand + ' failed')
 		

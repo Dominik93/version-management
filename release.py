@@ -13,7 +13,7 @@ from init import *
 def releaseModule(customer, module, bumpVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
-		prettyLog('Release module')
+		logger.prettyLog('Release module')
 		version = Version(bumpVersion)
 
 		snapshot = 'SNAPSHOT'
@@ -44,11 +44,11 @@ def releaseModule(customer, module, bumpVersion):
 
 	
 
-specialLog('Start release ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('Start release ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 releaseModule(customer, args.module, args.bump_version)
 
-specialLog('End release ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
+logger.specialLog('End release ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
 
 
