@@ -12,7 +12,7 @@ def incrementVersion(module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	currentVersion = getVersion(module);
 	incrementedVersion = insertZero(currentVersion)
-	logger.log('Increment version of '+ module + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	Logger.getInstance().log('Increment version of '+ module + ' from ' + currentVersion + ' to ' + incrementedVersion)
 	changeVersion(module, currentVersion, incrementedVersion)
 
 
@@ -41,7 +41,7 @@ def changeParentVersion(file, currentVersion, incrementedVersion):
 		else:
 			f.write(line)
 	f.close()
-	logger.log('Changed parent in file '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	Logger.getInstance().log('Changed parent in file '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
 	
 def changeMainVersion(file, currentVersion, incrementedVersion):
 	f = open(file, "r") 
@@ -60,7 +60,7 @@ def changeMainVersion(file, currentVersion, incrementedVersion):
 		else:
 			f.write(line)
 	f.close()
-	logger.log('Changed main pom '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
+	Logger.getInstance().log('Changed main pom '+ file + ' from ' + currentVersion + ' to ' + incrementedVersion)
 		
 def getVersion(module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
@@ -77,7 +77,7 @@ def getVersion(module):
 			break
 
 	file.close()
-	logger.log('Get version ' + version)
+	Logger.getInstance().log('Get version ' + version)
 	return version;
 
 def cutVersion(version):
@@ -86,10 +86,10 @@ def cutVersion(version):
 	if len(ver.split('.')) > 3: # 1.2.5.4.5.8
 		index = ver.rfind('.', 0, ver.rfind('.', 0, ver.rfind('.') -1) -1)
 		cut = '-'.join([ver[index+1:], prefix])
-		logger.log('Cut: ' + cut)
+		Logger.getInstance().log('Cut: ' + cut)
 		return cut
 	cut = '-'.join([ver, prefix])
-	logger.log('Cut: ' + cut)
+	Logger.getInstance().log('Cut: ' + cut)
 	return cut
 	
 def suffix(version):
@@ -98,10 +98,10 @@ def suffix(version):
 	if len(ver.split('.')) > 3: # 1.2.5.4.5.8
 		index = ver.rfind('.', 0, ver.rfind('.', 0, ver.rfind('.') -1) -1)
 		suffix = ver[:index]
-		logger.log('Suffix: ' + suffix)
+		Logger.getInstance().log('Suffix: ' + suffix)
 		return suffix
 	suffix = ver
-	logger.log('Suffix: ' + suffix)
+	Logger.getInstance().log('Suffix: ' + suffix)
 	return suffix
 
 	
