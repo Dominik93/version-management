@@ -1,4 +1,4 @@
-from logger import *
+from logger.logger import Logger
 
 versions = ['major', 'minor', 'incremental']
 defaultVersion = 'incremental'

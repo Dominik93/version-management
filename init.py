@@ -1,16 +1,14 @@
-import version_manager as versionManager
 import sys
 import os
 import configparser
 import shutil
 import argparse
-from git import *
-from logger import *
-from version import *
-from branch import *
-from maven import *
-from input import *
-from cleaner import *
+from logger.logger import Logger
+from maven.maven import Maven
+from git.git import Git
+from cleaner.cleaner import Cleaner
+from input.input import Input
+from version.version import (defaultVersion, versions)
 
 parser = argparse.ArgumentParser(description='Tool for version management')
 parser.add_argument("module", help = 'Module to release')

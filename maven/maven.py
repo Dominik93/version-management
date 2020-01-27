@@ -1,10 +1,11 @@
 import os
-import version_manager as versionManager
-from logger import *
-from path import *
-from version import *
+import common.path
+from logger.logger import Logger
+from version.version import Version
+from common.path import getCurrentDirectory
 from subprocess import Popen,PIPE,STDOUT,call
-from command_executor import *
+from command.command_executor import run
+from version.version_manager import (changeVersion,incrementVersion, getVersion, suffix, cutVersion)
 
 class Maven:
 
@@ -19,7 +20,7 @@ class Maven:
 
 	def __init__(self, config, module, options, profiles, debug = False):
 		self.logger = Logger.getInstance()
-		self.debug = debug;
+		self.debug = debug
 		self.projectPath = getCurrentDirectory() + '/'+ module.split('/')[-1]
 		self.client = config['MAVEN']['client']
 		self.module = module
@@ -38,27 +39,27 @@ class Maven:
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, version) + ' versions:commit')
 		
 	def bumpSupportVersion(self, prefix):
-		version = versionManager.getVersion(self.module)  
-		suffixVersion = versionManager.suffix(version) 
-		cuttedVersion = versionManager.cutVersion(version)
-		versionManager.changeVersion(self.module, version, cuttedVersion)
+		version = getVersion(self.module)  
+		suffixVersion = suffix(version) 
+		cuttedVersion = cutVersion(version)
+		changeVersion(self.module, version, cuttedVersion)
 
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version('incremental')) + ' versions:commit')
 				
-		version = versionManager.getVersion(self.module)
-		versionManager.changeVersion(self.module, version, suffixVersion + '.' + version);
+		version = getVersion(self.module)
+		changeVersion(self.module, version, suffixVersion + '.' + version);
 		
 	def release(self, prefix):
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version()) + ' versions:commit')
 		
 	def releaseSupportVersion(self, prefix):
-		version = versionManager.getVersion(self.module)
-		suffixVersion = versionManager.suffix(version)
-		cuttedVersion = versionManager.cutVersion(version)
-		versionManager.changeVersion(self.module, version, cuttedVersion)
+		version = getVersion(self.module)
+		suffixVersion = suffix(version)
+		cuttedVersion = cutVersion(version)
+		changeVersion(self.module, version, cuttedVersion)
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version()) + ' versions:commit')
-		version = versionManager.getVersion(self.module)
-		versionManager.changeVersion(self.module, version, suffixVersion + '.' + version);
+		version = getVersion(self.module)
+		changeVersion(self.module, version, suffixVersion + '.' + version);
 			
 		
 	def newVersionBuilder(self, prefix, version):
