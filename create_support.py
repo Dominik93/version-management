@@ -7,13 +7,13 @@ import argparse
 
 from init import *
 from common.path import getCurrentDirectory
+from common.input import Input
 from version.version import Version
 from logger.logger import Logger
 from maven.maven import Maven
 from git.git import Git
 from git.branch import Branch
 from cleaner.cleaner import Cleaner
-from input.input import Input
 
 
 def createSupportBranch(customer, module, moduleVersion):
@@ -46,7 +46,7 @@ def createSupportBranch(customer, module, moduleVersion):
 
 logger.specialLog('Start create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
-args.version = input.askAndAnswer(args.version, 'Set version of module: ');
+args.version = input.askAndAnswer(args.version, 'Set version of module: ')
 createSupportBranch(customer, args.module, args.version)
 
 logger.specialLog('End create support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)

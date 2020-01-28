@@ -7,13 +7,13 @@ import argparse
 
 from init import *
 from common.path import getCurrentDirectory
+from common.input import Input
 from version.version import Version
 from logger.logger import Logger
 from maven.maven import Maven
 from git.git import Git
 from git.branch import Branch
 from cleaner.cleaner import Cleaner
-from input.input import Input
 
 def releaseSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
@@ -46,7 +46,7 @@ def releaseSupportBranch(customer, module, moduleVersion):
 
 logger.specialLog('Start release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
-args.version = input.askAndAnswer(args.version, 'Set version of module: ');
+args.version = input.askAndAnswer(args.version, 'Set version of module: ')
 releaseSupportBranch(customer, args.module, args.version)
 
 logger.specialLog('End release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)

@@ -7,7 +7,7 @@ from logger.logger import Logger
 from maven.maven import Maven
 from git.git import Git
 from cleaner.cleaner import Cleaner
-from input.input import Input
+from common.input import Input
 from version.version import (defaultVersion, versions)
 
 parser = argparse.ArgumentParser(description='Tool for version management')

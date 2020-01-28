@@ -7,13 +7,13 @@ import argparse
 
 from init import *
 from common.path import getCurrentDirectory
+from common.input import Input
 from version.version import Version
 from logger.logger import Logger
 from maven.maven import Maven
 from git.git import Git
 from git.branch import Branch
 from cleaner.cleaner import Cleaner
-from input.input import Input
 
 def initCustomer(customer, module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
