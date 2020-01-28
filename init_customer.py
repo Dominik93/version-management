@@ -19,15 +19,15 @@ def initCustomer(customer, module):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
 		logger.prettyLog('Init customer')
-		branch = Branch(customer)
+		branch = Branch(customer, config['BRANCH'])
 
 		git.clone()
 
 		input.ask("Continue and push changes to branches? Y / N: ")
-		git.createBranch(branch.develop)
-		git.push(branch.develop)
-		git.createBranch(branch.master)
-		git.push(branch.master)
+		git.createBranch(branch.developBranch)
+		git.push(branch.developBranch)
+		git.createBranch(branch.mainBranch)
+		git.push(branch.mainBranch)
 	finally:
 		cleaner.clean(directory)
 

@@ -3,7 +3,6 @@ import common.path
 from logger.logger import Logger
 from version.version import Version
 from common.path import getCurrentDirectory
-from subprocess import Popen,PIPE,STDOUT,call
 from command.command_executor import run
 from version.version_manager import (changeVersion,incrementVersion, getVersion, suffix, cutVersion)
 
@@ -18,22 +17,32 @@ class Maven:
 	options = ""
 	profiles = ""
 
+	deployCommand = 'deploy'
+	installCommand = 'clean install'
+
 	def __init__(self, config, module, options, profiles, debug = False):
 		self.logger = Logger.getInstance()
 		self.debug = debug
 		self.projectPath = getCurrentDirectory() + '/'+ module.split('/')[-1]
-		self.client = config['MAVEN']['client']
+		self.client = config['client']
+		self.deployCommand = config.get('deploy_command', self.deployCommand)
+		self.installCommand = config.get('install_command', self.installCommand)
 		self.module = module
 		self.options = options.replace('\'','')
 		self.profiles = profiles.replace('\'','')
-		self.logger.log("Init maven with: " + self.projectPath + " | " + self.module + " | options: " + self.options + " | profiles: " + self.profiles + " | client: " + self.client + " | debug: " +str(self.debug))
+		self.logger.log("Init maven with: " + self.projectPath + " | " + self.module + 
+		" | options: " + self.options + 
+		" | profiles: " + self.profiles + 
+		" | client: " + self.client + 
+		" | deployCommand: " + self.deployCommand + 
+		" | installCommand: " + self.installCommand + 
+		" | debug: " +str(self.debug))
 
 	def cleanInstall(self):
-		self.maven('clean install')
+		self.maven(self.installCommand)
 
 	def deploy(self):
-		if not self.debug:
-			self.maven('install')
+		self.maven(self.deployCommand)
 
 	def bumpVersion(self, prefix, version):
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, version) + ' versions:commit')
@@ -47,7 +56,7 @@ class Maven:
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version('incremental')) + ' versions:commit')
 				
 		version = getVersion(self.module)
-		changeVersion(self.module, version, suffixVersion + '.' + version);
+		changeVersion(self.module, version, suffixVersion + '.' + version)
 		
 	def release(self, prefix):
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version()) + ' versions:commit')
@@ -59,7 +68,7 @@ class Maven:
 		changeVersion(self.module, version, cuttedVersion)
 		self.maven('build-helper:parse-version versions:set ' + self.newVersionBuilder(prefix, Version()) + ' versions:commit')
 		version = getVersion(self.module)
-		changeVersion(self.module, version, suffixVersion + '.' + version);
+		changeVersion(self.module, version, suffixVersion + '.' + version)
 			
 		
 	def newVersionBuilder(self, prefix, version):
