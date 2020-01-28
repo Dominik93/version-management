@@ -1,18 +1,19 @@
-import version_manager as versionManager
+import version.version_manager as versionManager
 import sys
 import os
 import configparser
 import shutil
 import argparse
-from git import *
-from path import *
-from logger import *
-from version import *
-from branch import *
-from maven import *
-from input import *
-from cleaner import *
+
 from init import *
+from common.path import getCurrentDirectory
+from common.input import Input
+from version.version import Version
+from logger.logger import Logger
+from maven.maven import Maven
+from git.git import Git
+from git.branch import Branch
+from cleaner.cleaner import Cleaner
 
 def releaseSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
@@ -45,7 +46,7 @@ def releaseSupportBranch(customer, module, moduleVersion):
 
 logger.specialLog('Start release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)
 
-args.version = input.askAndAnswer(args.version, 'Set version of module: ');
+args.version = input.askAndAnswer(args.version, 'Set version of module: ')
 releaseSupportBranch(customer, args.module, args.version)
 
 logger.specialLog('End release support version ' + args.module + ' ' + str(args.version) + ' ' +  args.bump_version)

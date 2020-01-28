@@ -1,7 +1,6 @@
 import sys
 import os
-from logger import *
-
+from logger.logger import Logger
 
 class Cleaner:
 
