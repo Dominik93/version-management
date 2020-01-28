@@ -6,8 +6,13 @@ class Logger:
 
     __instance = None
 
-    fileLogger = None
-    simpleLogger = None
+    logger = None
+
+    specialLogDivider = '*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n'
+
+    prettyLogDivider = '-------------------------------------------------------------------------------------\n'
+
+    commandLogDivider = '>>>>>>>>>>        '
 
     @staticmethod
     def getInstance():
@@ -23,26 +28,22 @@ class Logger:
         if Logger.__instance != None:
             raise Exception("This class is a singleton!")
         else:
-            self.fileLogger = FileLogger(fileLog)
-            self.simpleLogger = SimpleLogger()
+            if fileLog:
+                self.logger = FileLogger(SimpleLogger())
+            else:
+                self.logger = SimpleLogger()
             Logger.__instance = self
 
     def log(self, logMessage):
-        self.simpleLogger.log(logMessage)
-        self.fileLogger.log(logMessage+'\n')
+        self.logger.log(logMessage)
 
     def specialLog(self, logMessage):
-        message = '*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n' + \
-            logMessage+'\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n'
-        self.simpleLogger.log(message)
-        self.fileLogger.log(message)
+        message = self.specialLogDivider + logMessage + '\n' + self.specialLogDivider
+        self.logger.log(message)
 
     def commandLog(self, logMessage):
-        self.simpleLogger.log('>>>>>>>>>>     ' + logMessage + '\n')
-        self.fileLogger.log('>>>>>>>>>>     ' + logMessage + '\n')
+        self.logger.log(self.commandLogDivider + logMessage + '\n')
 
     def prettyLog(self, logMessage):
-        message = '-------------------------------------------------------------------------------------\n' + \
-            logMessage+'\n-------------------------------------------------------------------------------------\n'
-        self.simpleLogger.log(message)
-        self.fileLogger.log(message)
+        message = self.prettyLogDivider + logMessage + '\n' + self.prettyLogDivider
+        self.logger.log(message)
