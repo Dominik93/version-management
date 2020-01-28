@@ -1,7 +1,7 @@
 import os
 from logger.logger import Logger
 from command.command_executor import run
-from common.path import * 
+from common.path import *
 
 
 class Git:
@@ -14,21 +14,29 @@ class Git:
     url = ""
     client = ""
 
+    mergeMessage = 'merge changes'
+    mergeCommand = 'merge --strategy-option theirs'
+
     def __init__(self, config, module, debug=False):
         self.logger = Logger.getInstance()
         self.debug = debug
         self.projectPath = getCurrentDirectory() + '/' + module.split('/')[-1]
         self.module = module
-        self.url = config['GIT']['url']
-        self.client = config['GIT']['client']
-        self.logger.log("Init git with: " + self.projectPath + " | " + self.url + " | " +
-                        self.module + " | client: " + self.client + " | debug: " + str(self.debug))
+        self.url = config['url']
+        self.client = config['client']
+        self.mergeCommand = config.get('merge_command', self.mergeCommand)
+        self.mergeMessage = config.get('merge_message', self.mergeMessage)
+        self.logger.log("Init git with: " + self.projectPath +
+         " | " + self.url +
+         " | " + self.module + 
+         " | client: " + self.client + 
+         " | mergeCommand: " + self.mergeCommand + 
+         " | mergeMessage: " + self.mergeMessage + 
+         " | debug: " + str(self.debug))
 
     def clone(self):
-        self.logger.commandLog('git clone ' + self.url +
-                               '/' + self.module+'.git')
-        output = os.popen('git clone ' + self.url +
-                          '/' + self.module+'.git').read()
+        self.logger.commandLog('git clone ' + self.url + '/' + self.module+'.git')
+        output = os.popen('git clone ' + self.url + '/' + self.module+'.git').read()
         self.logger.log(output)
 
     def createBranch(self, branch):
@@ -54,8 +62,7 @@ class Git:
         self.git('checkout tags/'+tag+' -b ' + branch)
 
     def merge(self, source):
-        self.git('merge --strategy-option theirs origin/' +
-                 source + ' -m \"merge changes\" ')
+        self.git(self.mergeCommand + ' origin/' + source + ' -m \" ' + self.mergeMessage + ' \" ')
 
     def checkout(self, branch):
         self.git('checkout ' + branch)

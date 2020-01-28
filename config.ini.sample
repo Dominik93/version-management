@@ -1,9 +1,17 @@
 [GIT]
 url = https://username:password@url
 client = path/to/git
+merge_message = # Default merge changes
+merge_command = # Default merge --strategy-option theirs
 [PROJECT]
 customer = CUSTOMER
 [MAVEN]
 client = path/to/mvn
+deploy_command = # Default deploy
+install_command = # Default clean install, profiles and options not available
+[BRANCH]
+master =  # Default master
+develop = # Default develop
+support = # Default support
 [ENV]
 system = unix

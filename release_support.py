@@ -19,28 +19,28 @@ def releaseSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
 		logger.prettyLog('Release from support version')
-		branch = Branch(customer, moduleVersion)
+		branch = Branch(customer, config['BRANCH'], moduleVersion)
 
 		git.clone()
-		git.checkout(branch.master)
-		git.merge(branch.develop)
+		git.checkout(branch.mainBranch)
+		git.merge(branch.developBranch)
 		maven.releaseSupportVersion(prefix = customer)
 		maven.cleanInstall()
 		currentVersion = versionManager.getVersion(module)
 		git.commit(currentVersion)
 		git.createTag(currentVersion)
-		git.checkout(branch.develop)
+		git.checkout(branch.developBranch)
 		maven.bumpSupportVersion(prefix ='SNAPSHOT')
 		currentVersion = versionManager.getVersion(module)
 		git.commit('set version to ' + currentVersion)
-		git.checkout(branch.master)
+		git.checkout(branch.mainBranch)
 		maven.deploy()
 
 		input.ask("Continue and push changes to branches? Y / N: ")
-		git.push(branch.master)
+		git.push(branch.mainBranch)
 		git.pushTag()
-		git.checkout(branch.develop)
-		git.push(branch.develop)
+		git.checkout(branch.developBranch)
+		git.push(branch.developBranch)
 	finally:
 		cleaner.clean(directory)
 

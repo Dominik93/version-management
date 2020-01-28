@@ -20,11 +20,11 @@ def createSupportBranch(customer, module, moduleVersion):
 	directory = getCurrentDirectory() + '/'+ module.split('/')[-1]
 	try:
 		logger.prettyLog('Create support version')
-		branch = Branch(customer, moduleVersion)
+		branch = Branch(customer, config['BRANCH'], moduleVersion)
 
 		git.clone()
 		git.pullTags()
-		git.createBranchFromTag(moduleVersion + "-" + customer.upper(), branch.master)
+		git.createBranchFromTag(moduleVersion + "-" + customer.upper(), branch.mainBranch)
 		versionManager.incrementVersion(module)
 		maven.cleanInstall()
 		currentVersion = versionManager.getVersion(module)
@@ -33,13 +33,13 @@ def createSupportBranch(customer, module, moduleVersion):
 		maven.deploy()
 
 		input.ask("Continue and push changes to branches? Y / N: ")
-		git.push(branch.master)
+		git.push(branch.mainBranch)
 		git.pushTag()
-		git.createBranch(branch.develop)
+		git.createBranch(branch.developBranch)
 		maven.bumpSupportVersion(prefix = 'SNAPSHOT')
 		currentVersion = versionManager.getVersion(module)
 		git.commit('set version to ' + currentVersion)
-		git.push(branch.develop)
+		git.push(branch.developBranch)
 	finally:
 		cleaner.clean(directory)
 

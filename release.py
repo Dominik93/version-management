@@ -22,28 +22,28 @@ def releaseModule(customer, module, bumpVersion):
 		version = Version(bumpVersion)
 
 		snapshot = 'SNAPSHOT'
-		branch = Branch(customer)
+		branch = Branch(customer, config['BRANCH'])
 
 		git.clone()
-		git.checkout(branch.master)
-		git.merge(branch.develop)
+		git.checkout(branch.mainBranch)
+		git.merge(branch.developBranch)
 		maven.release(customer)
 		maven.cleanInstall()
 		currentVersion = versionManager.getVersion(module)
 		git.commit(currentVersion)
 		git.createTag(currentVersion)
-		git.checkout(branch.develop)
+		git.checkout(branch.developBranch)
 		maven.bumpVersion(prefix = snapshot, version = version)
 		currentVersion = versionManager.getVersion(module)
 		git.commit('set version to ' + currentVersion)
-		git.checkout(branch.master)
+		git.checkout(branch.mainBranch)
 		maven.deploy()
 
 		input.ask("Continue and push changes to branches? Y / N: ")
-		git.push(branch.master)
+		git.push(branch.mainBranch)
 		git.pushTag()	
-		git.checkout(branch.develop)
-		git.push(branch.develop)
+		git.checkout(branch.developBranch)
+		git.push(branch.developBranch)
 	finally:
 		cleaner.clean(directory)
 

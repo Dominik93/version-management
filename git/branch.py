@@ -4,24 +4,31 @@ class Branch:
 
 	logger = None
 
-	master = ''
-	develop = ''
+	master = 'master'
+	support = 'support'
+	develop = 'develop'
 
-	def __init__(self, customer, version = ''):
+	mainBranch = ''
+	developBranch = ''
+
+	def __init__(self, customer, config, version = ''):
 		self.logger = Logger.getInstance()
 		branchPrefix = customer.lower()
+		self.master = config.get('master', self.master)
+		self.develop = config.get('develop', self.develop)
+		self.support = config.get('support', self.support)
 		if version == '':
 			if branchPrefix == '':
-				self.master = 'master'
-				self.develop = 'develop'
+				self.mainBranch = self.master
+				self.developBranch = self.develop
 			else:
-				self.master = '/'.join([branchPrefix, 'master'])
-				self.develop = '/'.join([branchPrefix, 'develop'])
+				self.mainBranch = '/'.join([branchPrefix, self.master])
+				self.developBranch = '/'.join([branchPrefix, self.develop])
 		else:
 			if branchPrefix == '':
-				self.master = 'support_' + version
-				self.develop = 'develop_' + version
+				self.mainBranch = self.support + '_' + version
+				self.developBranch = self.develop + '_' + version
 			else:
-				self.master = '/'.join([branchPrefix, 'support_' + version])
-				self.develop = '/'.join([branchPrefix, 'develop_' + version])
+				self.mainBranch = '/'.join([branchPrefix, self.support + '_' + version])
+				self.developBranch = '/'.join([branchPrefix,  self.develop + '_' + version])
 		self.logger.log('Init branch with: ' + str(self.develop) + ' | ' + str(self.master))
