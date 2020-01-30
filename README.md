@@ -1,68 +1,152 @@
+# Version management
 
-# Configuration:
+Version management is a tool to help release application, bump version and creation of support branches.
 
-All configuration is stored in config.init file. Use config.ini.sample and create your own config.ini 
+## Getting Started
+
+### Prerequisites
+
+Python, version 3.8.0<br>
+Maven, version 3.5.3<br>
+Git, version 2.6.1
+
+
+### Configuration:
+
+All configuration is stored in config.ini file. Use config.ini.sample and create your own config.ini 
 
 ###### GIT
 
-url - url to git
+url - url to git, required
 
-client - full path to git binary
+client - full path to git binary, required
+
+merge_command - command used in merge branch develop to master, default "merge --strategy-option theirs"
+
+merge_message - commit message added to merge, default "merge changes"
 
 ###### PROJECT
 
-customer - name of customer, can be empty, act as suffix for branches and prefix for released version and tags
+customer - name of customer, can be empty, act as prefix for branches and suffix for released version and tags, required
 
 ###### MAVEN
 
-client - full path to maven binary
+client - full path to maven binary, required
+
+deploy_command - customize deploy command, default "deploy"
+
+install_command - customize install command, default "clean install"
 
 ###### ENV
 
-system - system(windows, unix) under which command will be executed
+system - system under which command will be executed, available: windows, unix, required
 
-# Additional options:
+###### BRANCH
 
-All options are available by running python init.py -h
+master - branch name where main released version is, default master
 
+develop - branch name where main and support development is, default develop
 
-# Usecase:
+support - branch name for 'master' version of support, default support
+
+## Use cases:
 
 ### Init customer:
 Create empty branches customer/develop and customer/master.
 
 <b>Example:</b>
 
-running<br>
-python init_customer.pl module<br>
-will create customer/master and customer/develop branches<br>
+Run:
+
+    python init_customer.py module
+
+Branches after init customer:
+
+    customer/master           
+    customer/develop          
 
 ###  Release
-Release module from develop to master. After that action version in develop will be increased.
+Release module from develop to master. After that action version in develop will be increased. Witch number will be increased can by specified in <i>bump-version</i> parameter. 
 
 <b>Example:</b>
 
-running<br>
-python release.pl module<br>
-will release develop into master<br>
+Version in branches before release:
+
+    master           1.0.1
+    develop          1.0.2-SNAPSHOT
+
+Run:
+
+    python release.py module
+
+Version in branches after release:
+
+    master           1.0.2
+    develop          1.0.3-SNAPSHOT
 
 ###  Create support version
 Create support version from given version. 
 
 <b>Example:</b>
 
-running<br>
-python create_support.pl module -v 1.20.0<br>
-will create customer/develop_1.20.0 and customer/support_1.20.0 from tag 1.20.0-customer
+Version in branches before create support:
+
+    master           1.5.0
+    develop          1.5.1-SNAPSHOT
+
+Run:
+
+    python create_support.py module --version=1.5.0
+
+Version in branches after create support:
+
+    master           1.5.0
+    develop          1.5.1-SNAPSHOT
+    support_1.5.0    1.5.0.0
+    develop_1.5.0    1.5.0.1-SNAPSHOT
 
 ### Release support version
 Release support version from branch develop_X.X.X to support_X.X.X. After that action version in develop will be increased.
 
-
 <b>Example:</b>
 
-running<br>
-python release_support.pl module -v 1.20.0<br>
-will release customer/develop_1.20.0 into customer/support_1.20.0
+Version in branches before release support:
 
-# FQA:
+    support_1.0.5     1.0.5.1
+    develop_1.0.5     1.0.5.2-SNAPSHOT
+
+Run:
+
+    python release_support.py module --version=1.0.5
+
+Version in branches after release support:
+
+    support_1.0.5     1.0.5.2
+    develop_1.0.5     1.0.5.3-SNAPSHOT
+
+### Additional options:
+
+All options are available by running init.py -h or any other script with -h option
+
+  --config-file CONFIG_FILE
+                        Configuration file, default config.ini
+                        
+  --version VERSION     Support version of module, needed only for support versions
+  
+  --maven-options MAVEN_OPTIONS
+                        Options pass to maven, eg. "-DskipTests"
+  
+  --maven-profiles MAVEN_PROFILES
+                        Profiles pass to maven, eg. "-Prelease"
+  
+  --bump-version {major,minor,incremental}
+                        What version number will be bump, only for release
+  
+  --silent              Silent mode. Never ask user for input
+  
+  --debug-mode          Debug mode, don`t execute command like git push, mvn clean install
+  
+  --log-output          Log all executed command and messages into file log.txt
+
+
+## FAQ:
