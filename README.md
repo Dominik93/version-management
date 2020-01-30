@@ -41,7 +41,7 @@ install_command - customize install command, default "clean install"
 
 system - system under which command will be executed, available: windows, unix, required
 
-#### BRANCH
+###### BRANCH
 
 master - branch name where main released version is, default master
 
@@ -60,7 +60,7 @@ Run:
 
     python init_customer.py module
 
-Branches after release:
+Branches after init customer:
 
     customer/master           
     customer/develop          
@@ -104,10 +104,6 @@ Version in branches after create support:
     develop          1.5.1-SNAPSHOT
     support_1.5.0    1.5.0.0
     develop_1.5.0    1.5.0.1-SNAPSHOT
-
-running<br>
-python create_support.py module --version 1.20.0<br>
-will create customer/develop_1.20.0 and customer/support_1.20.0 from tag 1.20.0-customer
 
 ### Release support version
 Release support version from branch develop_X.X.X to support_X.X.X. After that action version in develop will be increased.
