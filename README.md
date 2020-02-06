@@ -70,18 +70,20 @@ Release module from develop to master. After that action version in develop will
 
 <b>Example:</b>
 
-Version in branches before release:
+Version and tags in branches before release:
 
-    master           1.0.1
+    Branch           Versions               Tags
+    master           1.0.1                  1.0.0, 1.0.1
     develop          1.0.2-SNAPSHOT
 
 Run:
 
     python release.py module
 
-Version in branches after release:
+Version and tags in branches after release:
 
-    master           1.0.2
+    Branch           Versions               Tags
+    master           1.0.2                  1.0.0, 1.0.1, 1.0.2
     develop          1.0.3-SNAPSHOT
 
 ###  Create support version
@@ -89,21 +91,45 @@ Create support version from given version.
 
 <b>Example:</b>
 
-Version in branches before create support:
-
-    master           1.5.0
-    develop          1.5.1-SNAPSHOT
+Version and tags in branches before create support:
+    
+    Branch           Version                Tags
+    master           1.5.0                  1.1.0, 1.2.0, ..., 1.5.0
+    develop          1.5.1-SNAPSHOT 
 
 Run:
 
     python create_support.py module --version=1.5.0
 
-Version in branches after create support:
+Version and tags in branches after create support:
 
-    master           1.5.0
+    Branch           Versions               Tags
+    master           1.5.0                  1.1.0, 1.2.0, ..., 1.5.0
     develop          1.5.1-SNAPSHOT
-    support_1.5.0    1.5.0.0
+    support_1.5.0    1.5.0.0                1.5.0.0
     develop_1.5.0    1.5.0.1-SNAPSHOT
+
+<br>
+<br>
+
+Version and tags in branches before create support:
+
+    Branch           Versions               Tags
+    support_1.8.2    1.8.2.4                1.8.2.0, 1.8.2.1, ..., 1.8.2.4
+    develop_1.8.2    1.8.2.5-SNAPSHOT
+
+Run:
+
+    python create_support.py module --version=1.8.2.4
+
+Version and tags in branche s after create support:
+
+    Branch                  Versions               Tags
+    support_1.8.2           1.8.2.4                1.8.2.0, 1.8.2.1, ..., 1.8.2.4
+    develop_1.8.2           1.8.2.5-SNAPSHOT
+    support_1.8.2.4         1.8.2.4.0              1.8.2.4.0
+    develop_1.8.2.4         1.8.2.4.1-SNAPSHOT
+
 
 ### Release support version
 Release support version from branch develop_X.X.X to support_X.X.X. After that action version in develop will be increased.
@@ -112,7 +138,8 @@ Release support version from branch develop_X.X.X to support_X.X.X. After that a
 
 Version in branches before release support:
 
-    support_1.0.5     1.0.5.1
+    Branch            Versions               Tags
+    support_1.0.5     1.0.5.1                1.0.5.0, 1.0.5.1
     develop_1.0.5     1.0.5.2-SNAPSHOT
 
 Run:
@@ -121,7 +148,8 @@ Run:
 
 Version in branches after release support:
 
-    support_1.0.5     1.0.5.2
+    Branch            Versions               Tags
+    support_1.0.5     1.0.5.2                1.0.5.0, 1.0.5.1, 1.0.5.2
     develop_1.0.5     1.0.5.3-SNAPSHOT
 
 ### Additional options:
