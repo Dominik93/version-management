@@ -13,5 +13,3 @@ install_command = # Default clean install, profiles and options not available
 master =  # Default master
 develop = # Default develop
 support = # Default support
-[ENV]
-system = unix
