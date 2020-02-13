@@ -26,7 +26,7 @@ class VersionBuilder:
 				prefix = '-' + self._prefix
 
 		escape = ''
-		if self.system == 'unix':		
+		if self.system != 'windows':		
 			escape = '\\'
 
 		versions = [escape + self._version.majorVersion, escape + self._version.minorVersion, escape + self._version.incrementalVersion]
