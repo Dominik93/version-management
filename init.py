@@ -3,6 +3,7 @@ import os
 import configparser
 import shutil
 import argparse
+import platform
 from logger.logger import Logger
 from maven.maven import Maven
 from git.git import Git
@@ -24,12 +25,15 @@ args = parser.parse_args()
 
 config = configparser.ConfigParser()
 config.read(args.config_file)
+
+system = platform.system().lower()
 logger = Logger.initialize(args.log_output)
+
 logger.prettyLog('Init variables')
 customer = config['PROJECT']['customer']
 logger.log('Customer ' + customer)
 git = Git(config['GIT'], args.module, args.debug_mode)
-maven = Maven(config['MAVEN'], args.module, args.maven_options, args.maven_profiles, args.debug_mode)
+maven = Maven(config['MAVEN'], args.module, args.maven_options, args.maven_profiles, system, args.debug_mode)
 input = Input(args.silent)
-cleaner = Cleaner(config['ENV']['system'])
+cleaner = Cleaner(system)
 logger.prettyLog('Init variables end')

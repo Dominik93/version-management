@@ -37,10 +37,6 @@ deploy_command - customize deploy command, default "deploy"
 
 install_command - customize install command, default "clean install"
 
-###### ENV
-
-system - system under which command will be executed, available: windows, unix, required
-
 ###### BRANCH
 
 master - branch name where main released version is, default master
