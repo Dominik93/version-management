@@ -20,16 +20,17 @@ class VersionBuilder:
 		return self
 
 	def build(self):
-		prefix = ''
-		if self._prefix != None:
-			if self._prefix != '':
-				prefix = '-' + self._prefix
-
-		escape = ''
-		if self.system != 'windows':		
-			escape = '\\'
-
+		prefix = self.__getPrefix()
+		escape = self.__getEscapeCharacter()
 		versions = [escape + self._version.majorVersion, escape + self._version.minorVersion, escape + self._version.incrementalVersion]
-			
-		return '-DnewVersion=' + '.'.join(versions) + '' + prefix
+		return '-DnewVersion=' + '.'.join(versions) + prefix
 	
+	def __getEscapeCharacter(self):
+		if self.system != 'windows':		
+			return '\\'
+		return ''
+
+	def __getPrefix(self):
+		if self._prefix != None and self._prefix != '':
+			return '-' + self._prefix
+		return ''	
