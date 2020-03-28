@@ -75,11 +75,15 @@ class Maven:
 		changeVersion(self.module, version, suffixVersion + '.' + version)
 			
 	def maven(self, command):
-		fullCommand = self.client +' ' + command +' ' + self.options + ' ' + self.profiles + ' -f ' + self.projectPath
+		fullCommand = self.client + ' ' + command + ' ' + self.options + ' ' + self.profiles + ' -f ' + self.projectPath
 		self.logger.commandLog(fullCommand)
 		if not self.debug:
+			failure = False
 			for partOfOutput in run(fullCommand):
-				self.logger.log(str(partOfOutput.decode()))
-				if 'BUILD FAILURE' in str(partOfOutput.decode()):
-					raise Exception(fullCommand + ' failed')
+				decodedOutput = str(partOfOutput.decode())
+				self.logger.log(decodedOutput)
+				if 'BUILD FAILURE' in decodedOutput:
+					failure = True
+			if failure:
+				raise Exception(fullCommand + ' failed')
 		
