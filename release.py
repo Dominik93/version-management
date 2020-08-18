@@ -32,12 +32,33 @@ def releaseModule(module, bumpVersion):
 		cleaner.clean(directory)
 
 	
+def printModules(projects):
+	i = 1
+	print('0-None')
+	for key in projects.keys():
+		print(str(i) +'-' + key)
+		i += 1
 
-logger.specialLog('Start release ' + args.module + ' ' + str(args.version))
+def getPoject(projects, index):
+	i = 1
+	for key in projects.keys():
+		if str(i) == index:
+			return projects[key]
+	return 'None'		
+			
 
-releaseModule(args.module, args.version)
-
-logger.specialLog('End release ' + args.module + ' ' + str(args.version))
+while True:
+	printModules(config['PROJECT'])
+	module = getPoject(config['PROJECT'], input.askAndAnswer(None, "Choose module: "))
+	print(module)
+	if module == 'None':
+		break
+	version = input.askAndAnswer(None, "Choose version: ")
+	git = Git(config['GIT'], module, args.debug_mode)
+	maven = Maven(config['MAVEN'], module, args.debug_mode)
+	logger.specialLog('Start release ' + module + ' ' + str(version))
+	releaseModule(module, version)
+	logger.specialLog('End release ' + module + ' ' + str(version))
 
 
 

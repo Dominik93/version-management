@@ -5,3 +5,6 @@ client = path/to/git
 client = path/to/mvn
 [BRANCH]
 mainBranch =  # Default master
+[PROJECT]
+sample_project_1 = path/on/git
+sample_project_2 = path/on/git
