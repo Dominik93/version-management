@@ -62,7 +62,7 @@ Branches after init customer:
     customer/develop          
 
 ###  Release
-Release module from develop to master. After that action version in develop will be increased. Witch number will be increased can by specified in <i>bump-version</i> parameter. 
+Release module from develop to master. After that action version in develop will be increased. Which number will be increased can by specified in <i>bump-version</i> parameter. 
 
 <b>Example:</b>
 
